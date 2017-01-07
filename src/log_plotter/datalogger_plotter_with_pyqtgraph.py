@@ -14,6 +14,7 @@ import os
 import fnmatch
 import re
 import signal
+import itertools
 import log_plotter.plot_method as plot_method
 from log_plotter.graph_legend import GraphLegendInfo, expand_str_to_list
 import log_plotter.yaml_selector as yaml_selector
@@ -22,6 +23,7 @@ import log_plotter.graph_tools as graph_tools
 
 try:
     import pyqtgraph
+    import pyqtgraph.exporters
 except:
     print "please install pyqtgraph. see http://www.pyqtgraph.org/"
     sys.exit(1)
@@ -252,6 +254,15 @@ class DataloggerLogParser:
                     ax['item'].setLabel()
                 # set bottom label
                 cur_item.setLabel("bottom", text=self.legend_list[i][j][0].group_info['bottom_label'])
+                # # add second axis to right
+                # for i, j in itertools.product(range(row_num), range(col_num)):
+                #     cur_item = self.view.ci.rows[i][j]
+                #     p2 = pyqtgraph.ViewBox()
+                #     cur_item.showAxis('right')
+                #     cur_item.scene().addItem(p2)
+                #     cur_item.getAxis('right').linkToView(p2)
+                #     p2.setXLink(cur_item)
+                #     cur_item.getAxis('right').setLabel('axis2', color='#0000ff')
 
     @my_time
     def setItemSize(self):
@@ -358,6 +369,7 @@ class DataloggerLogParser:
             qa5 = hm.addAction('hide except this plot')
             qa6 = hm.addAction('hide except this row')
             qa7 = hm.addAction('hide except this column')
+            qa8 = vb.menu.addAction('Export SVG All')
             def hideCB(item):
                 self.view.ci.removeItem(item)
             def hideRowCB(item):
@@ -394,6 +406,9 @@ class DataloggerLogParser:
                 for key in self.plotItemOrig:
                     r, c = self.plotItemOrig[key][0]
                     self.view.ci.addItem(key, row=r, col=c)
+            def exportSVG():
+                exporter = pyqtgraph.exporters.SVGExporter(self.view.scene())
+                exporter.export(self.fname + ".svg")
             qa1.triggered.connect(functools.partial(hideCB, pi))
             qa2.triggered.connect(functools.partial(hideRowCB, pi))
             qa3.triggered.connect(functools.partial(hideColCB, pi))
@@ -401,6 +416,7 @@ class DataloggerLogParser:
             qa5.triggered.connect(functools.partial(hideExcCB, pi))
             qa6.triggered.connect(functools.partial(hideExcRowCB, pi))
             qa7.triggered.connect(functools.partial(hideExcColumnCB, pi))
+            qa8.triggered.connect(exportSVG)
 
     @my_time
     def customMenu2(self):

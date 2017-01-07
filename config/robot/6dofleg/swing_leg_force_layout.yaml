@@ -1,0 +1,36 @@
+- title: swing_foot_force
+  legends:
+    # - { key: rmfo_off_rfsensor_swing, id: [0-2], label: rmfo_rleg }
+    # - { key: rmfo_off_lfsensor_swing, id: [0-2], label: rmfo_lleg }
+    - { key: st_abs_rfsensor_swing, id: [0-2], label: abs_rleg }
+    - { key: st_abs_lfsensor_swing, id: [0-2], label: abs_lleg }
+    - { key: st_abs_rfsensor_swing_compensation, id: [0-2], label: rleg_compensation }
+    - { key: st_abs_lfsensor_swing_compensation, id: [0-2], label: lleg_compensation }
+    # - { key: st_abs_rfsensor_swing_compensation_filter, id: [0-2], label: rleg_compensation } # filtered scipy
+    # - { key: st_abs_lfsensor_swing_compensation_filter, id: [0-2], label: lleg_compensation }
+    # - { key: st_abs_rfsensor_swing_compensation_from_pos, id: [0-2], label: rleg_compensation } # filtered scipy from pos
+    # - { key: st_abs_lfsensor_swing_compensation_from_pos, id: [0-2], label: lleg_compensation }
+  label: N
+  # y_min: -10
+  # y_max: 10
+
+# - title: ee_pos
+#   legends:
+#     - { key: st_ee_pos, id: [0-2], label: rleg }
+#     - { key: st_ee_pos, id: [3-5], label: lleg }
+#     - { key: st_ee_pos_filter, id: [0-2], label: rleg_filter }
+#     - { key: st_ee_pos_filter, id: [3-5], label: lleg_filter }
+
+- title: ee_pos_acc
+  legends:
+    # - { key: st_ee_pos_acc, id: [0-2], label: rleg }
+    # - { key: st_ee_pos_acc, id: [3-5], label: lleg }
+    - { key: abc_ee_acc_ref, id: [0-2], label: acc_ref }
+    # - { key: st_ee_pos_acc_filter, id: [0-2], label: rleg_filter } # filtered scipy
+    # - { key: st_ee_pos_acc_filter, id: [3-5], label: lleg_filter }
+    # - { key: st_ee_pos_acc_from_filtered_pos, id: [0-2], label: rleg_filter_from_pos } # filtered scipy
+    # - { key: st_ee_pos_acc_from_filtered_pos, id: [3-5], label: lleg_filter_from_pos }
+
+# - title: ee_acc_ref
+#   legends:
+#     - { key: abc_ee_acc_ref, id: [0-2], label: acc_ref }

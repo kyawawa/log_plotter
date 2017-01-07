@@ -1,0 +1,98 @@
+main:
+  foot_force:
+    legends:
+      # - { key: rmfo_off_rfsensor, id: [0-2] }
+      # - { key: rmfo_off_lfsensor, id: [0-2] }
+      # - { key: rmfo_off_rfsensor_swing, id: [0-2], label: rmfo_rleg_swing }
+      # - { key: rmfo_off_lfsensor_swing, id: [0-2], label: rmfo_lleg_swing }
+      # - { key: st_abs_rfsensor, id: [0-2] }
+      # - { key: st_abs_lfsensor, id: [0-2] }
+      # - { key: st_abs_force_sum, id: [0-2] }
+      # - { key: st_abs_rfsensor_swing, id: [0-2], label: abs_rleg_swing }
+      # - { key: st_abs_lfsensor_swing, id: [0-2], label: abs_lleg_swing }
+      # - { key: st_abs_rfsensor_swing_abc, id: [0-2], label: abs_rleg_swing_abc }
+      # - { key: st_abs_lfsensor_swing_abc, id: [0-2], label: abs_lleg_swing_abc }
+      - { key: st_prev_act_force_rfsensor, id: [0-2], label: prev_act_force_rleg }
+      - { key: st_prev_act_force_lfsensor, id: [0-2], label: prev_act_force_lleg }
+      - { key: st_prev_act_force_sum, id: [0-2], label: prev_act_force_sum }
+      # - { key: st_prev_act_force_rfsensor_swing, id: [0-2], label: prev_act_force_rleg_swing }
+      # - { key: st_prev_act_force_lfsensor_swing, id: [0-2], label: prev_act_force_lleg_swing }
+      # - { key: rmfo_off_rfsensor_swing, id: [0], label: rmfo_rleg_swing_x }
+      # - { key: st_abs_rfsensor_swing, id: [0], label: abs_rleg_swing_x }
+      # - { key: st_abs_rfsensor_swing, id: [1], label: abs_rleg_swing_y }
+      # - { key: st_abs_rfsensor_swing, id: [2], label: abs_rleg_swing_z }
+    label: Force [N]
+
+  # st_mode:
+  #   legends:
+  #     - { key: st_mode, id: [0, 0, 0] }
+
+  ZMP:
+    legends:
+      # - { key: st_originActZmp, id: [0,1] }
+      # - { key: st_originRefZmp, id: [0,1] }
+      # - { key: st_originNewZmp, id: [0,1] }
+      # - { key: st_originActCog, id: [0-2] }
+      # - { key: st_originRefCog, id: [0-2] }
+      - { key: abc_refZmp, id: [0-2] }
+      - { key: abc_cogOut, id: [0-2] }
+      - { key: abc_basePos, id: [0-2] }
+      # - { key: abc_zmp, id: [0,1] }
+      # y_min: -0.2
+      # y_max: 0.2
+    label: '[m]'
+
+  gain:
+    legends:
+      - { key: pgain, id: [0, 4, 5] }
+      - { key: dgain, id: [0, 4, 5], label: rleg dgain }
+      - { key: pgain, id: [6, 10, 11] }
+      - { key: dgain, id: [6, 10, 11], label: lleg dgain }
+
+
+  contactStates:
+    legends:
+      - { key: abc_contactStates, id: [0,0,0], label: rleg_abc}
+      - { key: abc_contactStates, id: [1,1,1], label: lleg_abc}
+      - { key: st_actContactStates, id: [0,0,0], label: rleg_st}
+      - { key: st_actContactStates, id: [1,1,1], label: lleg_st}
+
+# - title: foot_moment
+#   legends:
+#     - { key: rmfo_off_rfsensor, id: [3-5] }
+#     - { key: rmfo_off_lfsensor, id: [3-5] }
+#     # - { key: st_abs_rfsensor, id: [3-5] }
+#     # - { key: st_abs_lfsensor, id: [3-5] }
+#   label: Nm
+
+# - title: imu_gsensor
+#   legends:
+#     - { key: imu_gsensor, id: [0], label: x }
+#     - { key: imu_gsensor, id: [1], label: y }
+#     - { key: imu_gsensor, id: [2], label: z }
+#   newline: False
+
+# - title: imu_gyrometer
+#   legends:
+#     - { key: imu_gyrometer, id: [0], label: x }
+#     - { key: imu_gyrometer, id: [1], label: y }
+#     - { key: imu_gyrometer, id: [2], label: z }
+#   newline: False
+
+# - title: st_actBaseRpy
+#   legends:
+#     - { key: st_actBaseRpy, id: [0], label: x }
+#     - { key: st_actBaseRpy, id: [1], label: y }
+#     - { key: st_actBaseRpy, id: [2], label: z }
+
+# - title: cog
+#   legends:
+#     - { key: st_originActCog, id: [0-2]}
+#     - { key: st_originRefCog, id: [0-2]}
+#     - { key: st_originActZmp, id: [0-2]}
+#     - { key: st_originRefZmp, id: [0-2]}
+#     - { key: st_originNewZmp, id: [0-2]}
+
+# - title: ee_pos_acc
+#   legends:
+#     - { key: abc_ee_acc_ref, id: [0-2], label: acc_ref }

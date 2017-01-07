@@ -3,12 +3,35 @@ import numpy
 import struct
 import math
 import sys
+from scipy import signal
+from IPython.core.debugger import Tracer
 
 try:
     import pyqtgraph
 except:
     print "please install pyqtgraph. see http://www.pyqtgraph.org/"
     sys.exit(1)
+
+def rotationMatrix(axis, theta):
+    """
+    Return the rotation matrix associated with counterclockwise rotation about
+    the given axis by theta radians.
+    """
+    axis = numpy.asarray(axis)
+    axis = axis/math.sqrt(numpy.dot(axis, axis))
+    a = math.cos(theta/2.0)
+    b, c, d = -axis*math.sin(theta/2.0)
+    aa, bb, cc, dd = a*a, b*b, c*c, d*d
+    bc, ad, ac, ab, bd, cd = b*c, a*d, a*c, a*b, b*d, c*d
+    return numpy.array([[aa+bb-cc-dd, 2*(bc+ad), 2*(bd-ac)],
+                     [2*(bc-ad), aa+cc-bb-dd, 2*(cd+ab)],
+                     [2*(bd+ac), 2*(cd-ab), aa+dd-bb-cc]])
+
+def butterLowpassFilter(data, cutoff, fs = 500, order = 2):
+    normal_cutoff = cutoff / (0.5 * fs)
+    b, a = signal.butter(order, normal_cutoff, btype='low', analog=False)
+    # b, a = signal.bessel(order, normal_cutoff, btype='low', analog=False)
+    return signal.lfilter(b, a, data)
 
 class PlotMethod(object):
     urata_len = 16
@@ -96,6 +119,11 @@ class PlotMethod(object):
         plot_item.plot(times, watt,pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=len(logs)-i, style=PlotMethod.linetypes["style"][i]), name=key, fillLevel=0, fillBrush=PlotMethod.linetypes["color"][i])
 
     @staticmethod
+    def plot_sum(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        data = numpy.sum([data_dict[logs[j]][:, log_cols[j]] for j in range(len(log_cols))], axis = 0)
+        plot_item.plot(times, data, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
     def plot_diff(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
         data_minuend = data_dict[logs[0]][:, log_cols[0]]
         data_subtrahend = data_dict[logs[1]][:, log_cols[1]]
@@ -129,6 +157,65 @@ class PlotMethod(object):
     @staticmethod
     def plot_inverse(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
         plot_item.plot(times, -data_dict[logs[0]][:, log_cols[0]], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_swing_wrench(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        wrench = data_dict[logs[0]][:, log_cols[0]]
+        contact_states = data_dict[logs[1]][:, log_cols[1]]
+        plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_swing_wrench_compensation_filter(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        wrench = data_dict[logs[0]][:, log_cols[0]]
+        contact_states = data_dict[logs[1]][:, log_cols[1]]
+        ee_pos_acc = data_dict[logs[2]][:, log_cols[2]]
+        ee_pos_acc = butterLowpassFilter(ee_pos_acc, 20.0, 500.0, 2)
+
+        foot_mass = 0.665
+        wrench += foot_mass * ee_pos_acc
+        plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+        # plot_item.plot(times, ee_pos_acc, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_data_lowpass_filtered(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        data = data_dict[logs[0]][:, log_cols[0]]
+        data = butterLowpassFilter(data, 20.0, 500.0, 2)
+        plot_item.plot(times, data, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+
+    @staticmethod
+    def plot_swing_wrench_compensation_from_pos(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        # wrench = numpy.array([sensorR.dot(x) for x in data_dict[logs[0]][:, 3:]])
+        wrench = data_dict[logs[0]][:, log_cols[0]]
+        # wrench = wrench[:, log_cols[0]]
+        contact_states = data_dict[logs[1]][:, log_cols[1]]
+        ee_pos = data_dict[logs[2]][:, log_cols[2]]
+        ee_pos = butterLowpassFilter(ee_pos, 2.0, 500.0, 2)
+        dt = times[1] - times[0]
+        ee_pos_vel = numpy.diff(ee_pos) / dt
+        ee_pos_vel = numpy.append([0], ee_pos_vel)
+        ee_pos_acc = numpy.diff(ee_pos_vel) / dt
+        ee_pos_acc = numpy.append([0], ee_pos_acc)
+        foot_mass = 0.665
+        foot_mass = 1.8
+        wrench += foot_mass * ee_pos_acc
+        plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+        # plot_item.plot(times, ee_pos_acc, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_acc_from_filtered_pos(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        ee_pos = data_dict[logs[0]][:, log_cols[0]]
+        ee_pos = butterLowpassFilter(ee_pos, 2.0, 500.0, 2)
+        dt = times[1] - times[0]
+        ee_pos_vel = numpy.diff(ee_pos) / dt
+        ee_pos_vel = numpy.append([0], ee_pos_vel)
+        ee_pos_acc = numpy.diff(ee_pos_vel) / dt
+        ee_pos_acc = numpy.append([0], ee_pos_acc)
+        plot_item.plot(times, ee_pos_acc, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_st_actcontactstates(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        plot_item.plot(times, numpy.add(data_dict[logs[0]][:, log_cols[0]], 0.8) / 2.0, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
 
     @staticmethod
     def normal(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
