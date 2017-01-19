@@ -14,6 +14,18 @@ rmfo_off_lfsensor_swing:
     - { log: rmfo_off_lfsensor, column: [0-5] }
     - { log: st_actContactStates, column: [1,1,1,1,1,1] }
 
+rmfo_off_rfsensor_swing_abc:
+  func: plot_swing_wrench
+  data:
+    - { log: rmfo_off_rfsensor, column: [0-5] }
+    - { log: abc_contactStates, column: [0,0,0,0,0,0] }
+
+rmfo_off_lfsensor_swing_abc:
+  func: plot_swing_wrench
+  data:
+    - { log: rmfo_off_lfsensor, column: [0-5] }
+    - { log: abc_contactStates, column: [1,1,1,1,1,1] }
+
 rmfo_off_rfsensor_swing_compensation:
   func: plot_swing_wrench_compensation
   data:
@@ -131,30 +143,3 @@ st_prev_act_force_sum:
 #     - { log: st_abslfsensor, column: [0-2] }
 #     - { log: st_actContactStates, column: [1,1,1] }
 #     - { log: st_absActEEPos, column: [3-5] }
-
-# st_ee_pos_acc_from_filtered_pos:
-#   func: plot_acc_from_filtered_pos
-#   data:
-#     - { log: st_absActEEPos, column: [0-5] }
-
-# st_ee_pos:
-#   data:
-#     - { log: st_absActEEPos, column: [0-5] }
-
-# st_ee_pos_filter:
-#   func: plot_data_lowpass_filtered
-#   data:
-#     - { log: st_absActEEPos, column: [0-5] }
-
-# st_ee_pos_acc:
-#   data:
-#     - { log: st_absActEEPosAcc, column: [0-5] }
-
-# st_ee_pos_acc_filter:
-#   func: plot_data_lowpass_filtered
-#   data:
-#     - { log: st_absActEEPosAcc, column: [0-5] }
-
-abc_ee_acc_ref:
-  data:
-    - { log: abc_footAccRef, column: [0-2] }

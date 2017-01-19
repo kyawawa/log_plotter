@@ -103,7 +103,7 @@ class DataloggerLogParser:
         # setup view
         self.view = pyqtgraph.GraphicsLayoutWidget()
         self.view.setBackground('w')
-        self.view.setWindowTitle(title if title else fname.split('/')[-1])
+        self.view.setWindowTitle(fname.split('/')[-1])
         # self.dateListDict is set by self.readData()
         self.dataListDict = {}# todo: to list of dictionary
         # back up for plot items
@@ -163,7 +163,7 @@ class DataloggerLogParser:
                 # add graph
                 plot_item = self.view.addPlot(viewBox = pyqtgraph.ViewBox(border = pyqtgraph.mkPen(color='k', width=2)))
                 self.legend_list[graph_row].append([])
-                plot_item.setTitle(title+" "+ (str(j) if group_len != 1 else ""))
+                plot_item.setTitle(title)
                 plot_item.showGrid(x=True, y=True, alpha=1)
                 if group.has_key('downsampling'):
                     plot_item.setDownsampling(ds = group['downsampling'].get('ds', 100),

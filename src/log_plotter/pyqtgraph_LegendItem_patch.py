@@ -7,8 +7,8 @@ from pyqtgraph.graphicsItems.PlotDataItem import PlotDataItem
 
 # set legend forefround white
 def white_foreground_legend_item_paint(legend_item, p, *args):
-    p.setPen(fn.mkPen(0,0,0,255, width = 1)) # r,g,b,alpha
-    p.setBrush(fn.mkBrush(255,255,255,255))
+    p.setPen(fn.mkPen(0,0,0,0, width = 1)) # r,g,b,alpha
+    p.setBrush(fn.mkBrush(255,255,255,0))
     p.drawRect(legend_item.boundingRect())
 
 # set legend, ItemSample horizontal

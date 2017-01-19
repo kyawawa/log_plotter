@@ -12,16 +12,44 @@ main:
       # - { key: st_abs_lfsensor_swing, id: [0-2], label: abs_lleg_swing }
       # - { key: st_abs_rfsensor_swing_abc, id: [0-2], label: abs_rleg_swing_abc }
       # - { key: st_abs_lfsensor_swing_abc, id: [0-2], label: abs_lleg_swing_abc }
-      - { key: st_prev_act_force_rfsensor, id: [0-2], label: prev_act_force_rleg }
-      - { key: st_prev_act_force_lfsensor, id: [0-2], label: prev_act_force_lleg }
-      - { key: st_prev_act_force_sum, id: [0-2], label: prev_act_force_sum }
-      # - { key: st_prev_act_force_rfsensor_swing, id: [0-2], label: prev_act_force_rleg_swing }
-      # - { key: st_prev_act_force_lfsensor_swing, id: [0-2], label: prev_act_force_lleg_swing }
+      # - { key: st_prev_act_force_rfsensor, id: [0-2], label: prev_act_force_rleg }
+      # - { key: st_prev_act_force_lfsensor, id: [0-2], label: prev_act_force_lleg }
+      # - { key: st_prev_act_force_sum, id: [0-2], label: prev_act_force_sum }
+      - { key: st_prev_act_force_rfsensor_swing, id: [0-2], label: prev_act_force_rleg_swing }
+      - { key: st_prev_act_force_lfsensor_swing, id: [0-2], label: prev_act_force_lleg_swing }
       # - { key: rmfo_off_rfsensor_swing, id: [0], label: rmfo_rleg_swing_x }
       # - { key: st_abs_rfsensor_swing, id: [0], label: abs_rleg_swing_x }
       # - { key: st_abs_rfsensor_swing, id: [1], label: abs_rleg_swing_y }
       # - { key: st_abs_rfsensor_swing, id: [2], label: abs_rleg_swing_z }
-    label: Force [N]
+      # - { key: st_prev_act_force_rfsensor_swing_compensation, id: [0-2], label: prev_act_force_rleg_compensation }
+      # - { key: st_prev_act_force_lfsensor_swing_compensation, id: [0-2], label: prev_act_force_lleg_compensation }
+    left_label: Force [N]
+
+  foot_moment:
+    legends:
+      # - { key: rmfo_off_rfsensor, id: [3-5] }
+      # - { key: rmfo_off_lfsensor, id: [3-5] }
+      - { key: st_abs_rfsensor, id: [3-5] }
+      - { key: st_abs_lfsensor, id: [3-5] }
+    left_label: Moment [Nm]
+
+  footPos:
+    legends:
+      # - { key: abc_footPosRef, id: [0-2] }
+      - { key: abc_rightFootPosRef, id: [0, 2] }
+      - { key: abc_leftFootPosRef, id: [0, 2] }
+    left_label: Pos [m]
+    newline: False
+  footPosXZ:
+    legends:
+      - { key: abc_rightFootPosRefXZ, id: [0] }
+      - { key: abc_leftFootPosRefXZ, id: [0] }
+
+  # abc_footAccRef:
+  #   legends:
+  #     - { key: abc_rightFootAccRef, id: [0-2] }
+  #     - { key: abc_leftFootAccRef, id: [0-2] }
+  #   left_label: Acc [m/s^2]
 
   # st_mode:
   #   legends:
@@ -29,41 +57,33 @@ main:
 
   ZMP:
     legends:
-      # - { key: st_originActZmp, id: [0,1] }
-      # - { key: st_originRefZmp, id: [0,1] }
-      # - { key: st_originNewZmp, id: [0,1] }
-      # - { key: st_originActCog, id: [0-2] }
-      # - { key: st_originRefCog, id: [0-2] }
-      - { key: abc_refZmp, id: [0-2] }
-      - { key: abc_cogOut, id: [0-2] }
-      - { key: abc_basePos, id: [0-2] }
+      - { key: st_originActZmp, id: [0,1] }
+      - { key: st_originRefZmp, id: [0,1] }
+      - { key: st_originNewZmp, id: [0,1] }
+      # - { key: st_originActCog, id: [0-1] }
+      # - { key: st_originRefCog, id: [0-1] }
+      # - { key: abc_refZmp, id: [0-2] }
+      # - { key: abc_cogOut, id: [0-2] }
+      # - { key: abc_basePos, id: [0-2] }
       # - { key: abc_zmp, id: [0,1] }
       # y_min: -0.2
       # y_max: 0.2
-    label: '[m]'
+    left_label: '[m]'
 
-  gain:
-    legends:
-      - { key: pgain, id: [0, 4, 5] }
-      - { key: dgain, id: [0, 4, 5], label: rleg dgain }
-      - { key: pgain, id: [6, 10, 11] }
-      - { key: dgain, id: [6, 10, 11], label: lleg dgain }
+  # gain:
+  #   legends:
+  #     - { key: pgain, id: [0, 4, 5], label: rlag pgain}
+  #     - { key: dgain, id: [0, 4, 5], label: rleg dgain }
+  #     - { key: pgain, id: [6, 10, 11], label: lleg pgain }
+  #     - { key: dgain, id: [6, 10, 11], label: lleg dgain }
 
 
-  contactStates:
-    legends:
-      - { key: abc_contactStates, id: [0,0,0], label: rleg_abc}
-      - { key: abc_contactStates, id: [1,1,1], label: lleg_abc}
-      - { key: st_actContactStates, id: [0,0,0], label: rleg_st}
-      - { key: st_actContactStates, id: [1,1,1], label: lleg_st}
-
-# - title: foot_moment
-#   legends:
-#     - { key: rmfo_off_rfsensor, id: [3-5] }
-#     - { key: rmfo_off_lfsensor, id: [3-5] }
-#     # - { key: st_abs_rfsensor, id: [3-5] }
-#     # - { key: st_abs_lfsensor, id: [3-5] }
-#   label: Nm
+  # contactStates:
+  #   legends:
+  #     - { key: abc_contactStates, id: [0,0,0], label: rleg_abc}
+  #     - { key: abc_contactStates, id: [1,1,1], label: lleg_abc}
+  #     - { key: st_actContactStates, id: [0,0,0], label: rleg_st}
+  #     - { key: st_actContactStates, id: [1,1,1], label: lleg_st}
 
 # - title: imu_gsensor
 #   legends:
@@ -93,6 +113,6 @@ main:
 #     - { key: st_originRefZmp, id: [0-2]}
 #     - { key: st_originNewZmp, id: [0-2]}
 
-# - title: ee_pos_acc
-#   legends:
-#     - { key: abc_ee_acc_ref, id: [0-2], label: acc_ref }
+  # ee_pos_acc:
+  #   legends:
+  #     - { key: abc_ee_acc_ref, id: [0-2], label: acc_ref }

@@ -33,6 +33,8 @@ def butterLowpassFilter(data, cutoff, fs = 500, order = 2):
     # b, a = signal.bessel(order, normal_cutoff, btype='low', analog=False)
     return signal.lfilter(b, a, data)
 
+hoge = "pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=4.0"
+
 class PlotMethod(object):
     urata_len = 16
     # color_list = pyqtgraph.functions.Colors.keys()
@@ -163,6 +165,24 @@ class PlotMethod(object):
         wrench = data_dict[logs[0]][:, log_cols[0]]
         contact_states = data_dict[logs[1]][:, log_cols[1]]
         plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+        # plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=4.0 - i, name=key)
+
+    @staticmethod
+    def plot_swing_wrench_remove_offset(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        wrench = data_dict[logs[0]][:, log_cols[0]]
+        wrench -= wrench[0]
+        contact_states = data_dict[logs[1]][:, log_cols[1]]
+        # plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+        plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=3.0, name=key)
+
+    @staticmethod
+    def plot_swing_wrench_compensation(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        wrench = data_dict[logs[0]][:, log_cols[0]]
+        ee_pos_acc = data_dict[logs[1]][:, log_cols[1]]
+        contact_states = data_dict[logs[2]][:, log_cols[2]]
+        foot_mass = 0.665
+        wrench += foot_mass * ee_pos_acc
+        plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
 
     @staticmethod
     def plot_swing_wrench_compensation_filter(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
@@ -218,5 +238,16 @@ class PlotMethod(object):
         plot_item.plot(times, numpy.add(data_dict[logs[0]][:, log_cols[0]], 0.8) / 2.0, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
 
     @staticmethod
+    def plot_relation(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        plot_item.plot(data_dict[logs[0]][:, log_cols[0]], data_dict[logs[1]][:, log_cols[1]], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_relation_swing(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        contact_states = data_dict[logs[2]][:, log_cols[2]]
+        # plot_item.plot([x * (1 - y) for x, y in zip(data_dict[logs[0]][:, log_cols[0]], contact_states)], [x * (1 - y) for x, y in zip(data_dict[logs[1]][:, log_cols[1]], contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+        plot_item.plot([x * (1 - y) for x, y in zip(data_dict[logs[0]][:, log_cols[0]], contact_states)], [x * (1 - y) for x, y in zip(data_dict[logs[1]][:, log_cols[1]], contact_states)], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=4.0, name=key)
+
+    @staticmethod
     def normal(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
         plot_item.plot(times, data_dict[logs[0]][:, log_cols[0]], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+        # plot_item.plot(times, data_dict[logs[0]][:, log_cols[0]], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=4.0, name=key)
