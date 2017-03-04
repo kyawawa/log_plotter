@@ -83,7 +83,7 @@ def replaceRH(fname_list):
     else: return fname_list
 
 class DataloggerLogParser:
-    def __init__(self, fname, plot_conf_name, layout_conf_name, title):
+    def __init__(self, fname, plot_conf_name, layout_conf_name, title, view=True):
         self.fname = fname
         self.plot_dict = metayaml.read(plot_conf_name)
         self.layout_dict = metayaml.read(layout_conf_name)["main"]
@@ -97,13 +97,15 @@ class DataloggerLogParser:
                 if type(leg['id'][0]) == str:
                     leg['id'] = expand_str_to_list(leg['id'][0])
             self.layout_dict[dict_title].setdefault('newline', True)
+            self.layout_dict[dict_title].setdefault('title', True)
             self.layout_dict[dict_title].setdefault('left_label', False)
             self.layout_dict[dict_title].setdefault('bottom_label', "time [s]")
 
         # setup view
-        self.view = pyqtgraph.GraphicsLayoutWidget()
-        self.view.setBackground('w')
-        self.view.setWindowTitle(fname.split('/')[-1])
+        if view:
+            self.view = pyqtgraph.GraphicsLayoutWidget()
+            self.view.setBackground('w')
+            self.view.setWindowTitle(fname.split('/')[-1])
         # self.dateListDict is set by self.readData()
         self.dataListDict = {}# todo: to list of dictionary
         # back up for plot items
@@ -111,7 +113,7 @@ class DataloggerLogParser:
 
         # default font style
         self.font_type = 'Times New Roman'
-        self.font_size = 12
+        self.font_size = 10
         self.font_color = 'black'
 
     @my_time
@@ -163,7 +165,8 @@ class DataloggerLogParser:
                 # add graph
                 plot_item = self.view.addPlot(viewBox = pyqtgraph.ViewBox(border = pyqtgraph.mkPen(color='k', width=2)))
                 self.legend_list[graph_row].append([])
-                plot_item.setTitle(title)
+                if group['title']:
+                    plot_item.setTitle(title)
                 plot_item.showGrid(x=True, y=True, alpha=1)
                 if group.has_key('downsampling'):
                     plot_item.setDownsampling(ds = group['downsampling'].get('ds', 100),
@@ -279,20 +282,34 @@ class DataloggerLogParser:
                 w = group.get('width', False)
                 if w:
                     if 'mm' in str(w):
-                        w = int(w.replace('mm', '')) # todo: support px, pt,...
+                        w = float(w.replace('mm', ''))
                         w = qdw.physicalDpiX() / 25.4 * w
-                    vb.setFixedWidth(w)
-                    bottom_ax.setFixedWidth(w)
-                    cur_item.setFixedWidth(cur_item.minimumWidth())
+                    elif 'pt' in str(w):
+                        w = float(w.replace('pt', ''))
+                        w = qdw.physicalDpiX() / 72.0 * w
+                    cur_item.setFixedWidth(w)
+                    # bottom_ax.setFixedWidth(w)
+                    # cur_item.setFixedWidth(cur_item.minimumWidth())
                 h = group.get('height', False)
                 if h:
                     if 'mm' in str(h):
-                        h = int(h.replace('mm', '')) # todo: support px, pt,...
+                        h = float(h.replace('mm', ''))
                         h = qdw.physicalDpiY() / 25.4 * h
-                    vb.setFixedHeight(h)
+                    elif 'pt' in str(h):
+                        h = float(h.replace('pt', ''))
+                        h = qdw.physicalDpiX() / 72.0 * h
+                    cur_item.setFixedHeight(h)
                     left_ax.setFixedHeight(h)
                     right_ax.setFixedHeight(h)
-                    cur_item.setFixedHeight(cur_item.minimumHeight())
+                    # cur_item.setFixedHeight(cur_item.minimumHeight())
+                # legend = cur_item.legend
+                # legend.layout.setVerticalSpacing(0)
+                # legend.layout.setHorizontalSpacing(0)
+                # top = bottom = 0
+                # left = 9
+                # right = 9
+                # legend.layout.setContentsMargins(left,top,right,bottom)
+                # legend.updateSize()
 
     @my_time
     def linkAxes(self):
@@ -302,29 +319,32 @@ class DataloggerLogParser:
         # X axis
         all_items = self.view.ci.items.keys()
         target_item = all_items[0]
-        for i, p in enumerate(all_items):
-            if i != 0:
-                p.setXLink(target_item)
-            else:
-                p.enableAutoRange()
+        # for i, p in enumerate(all_items):
+        #     p.enableAutoRange()
+        #     if i != 0:
+        #         p.setXLink(target_item)
+        #     else:
+        #         p.enableAutoRange()
         # Y axis
         for cur_row_dict in self.view.ci.rows.values():
             all_items = cur_row_dict.values()
             target_item = all_items[0]
             title = target_item.titleLabel.text
-            if title.find("joint_angle") == -1 and title.find("_force") == -1 and title != "imu" and title.find("comp") == -1:
-                y_min = min([ci.viewRange()[1][0] for ci in all_items])
-                y_max = max([ci.viewRange()[1][1] for ci in all_items])
-                target_item.setYRange(y_min, y_max)
-                for i, p in enumerate(all_items):
-                    if i != 0:
-                        p.setYLink(target_item)
+            # if title.find("joint_angle") == -1 and title.find("_force") == -1 and title != "imu" and title.find("comp") == -1:
+            #     y_min = min([ci.viewRange()[1][0] for ci in all_items])
+            #     y_max = max([ci.viewRange()[1][1] for ci in all_items])
+            #     target_item.setYRange(y_min, y_max)
+            #     for i, p in enumerate(all_items):
+            #         if i != 0:
+            #             p.setYLink(target_item)
         # design
         for i, p in enumerate(self.view.ci.items.keys()):
             ax = p.getAxis('bottom')
-            ax.setPen(pyqtgraph.mkPen('k', width=0.5, style=pyqtgraph.QtCore.Qt.DashLine))
+            pen = pyqtgraph.mkPen('k', width=0.5, style=pyqtgraph.QtCore.Qt.CustomDashLine)
+            pen.setDashPattern([1, 5])
+            ax.setPen(pen)
             ax = p.getAxis('left')
-            ax.setPen(pyqtgraph.mkPen('k', width=0.5, style=pyqtgraph.QtCore.Qt.DashLine))
+            ax.setPen(pen)
 
     @my_time
     def setFont(self):
@@ -448,8 +468,8 @@ class DataloggerLogParser:
         self.linkAxes()
         self.plotData()
         self.setLabel()
-        self.setItemSize()
         self.setFont()
+        self.setItemSize()
         self.customMenu()
         self.customMenu2()
         self.view.showMaximized()
