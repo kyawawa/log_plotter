@@ -2,6 +2,7 @@ extend:
   - ../../common_plot.yaml
   - ./fsensor_plot.yaml
   - ./ee_plot.yaml
+  - ./stability_plot.yaml
 
 sh_qOut:
   func: plot_rad2deg
@@ -28,11 +29,27 @@ RobotHardware0_q:
   data:
     - { log: RobotHardware0_q, column: [0-11] }
 
+RobotHardware0_dq:
+  func: plot_rad2deg
+  data:
+    - { log: RobotHardware0_dq, column: [0-11] }
+
+RobotHardware0_calc_dq:
+  func: plot_rad2deg_vel
+  data:
+    - { log: RobotHardware0_q, column: [0-11] }
+
 rh_st_diff:
   func: plot_rh_q_st_q
   data:
     - { log: RobotHardware0_q, column: [0-11] }
     - { log: st_q, column: [0-11] }
+
+ref_enc_diff:
+  func: plot_rad2deg_diff
+  data:
+    - { log: RobotHardware0_q, column: [0-11] }
+    - { log: el_q, column: [0-11] }
 
 abs_enc_diff:
   func: plot_abs_enc
@@ -42,42 +59,42 @@ abs_enc_diff:
 current:
   func: plot_current
   data:
-    - { log: RobotHardware0_servoState, column: [0,1,2,3,4,5] }
+    - { log: RobotHardware0_servoState, column: [0-11] }
 
 motor_temp:
   func: plot_motor_temp
   data:
-    - { log: RobotHardware0_servoState, column: [0,1,2,3,4,5] }
+    - { log: RobotHardware0_servoState, column: [0-11] }
 
 motor_outer_temp:
   func: plot_motor_outer_temp
   data:
-    - { log: RobotHardware0_servoState, column: [0,1,2,3,4,5] }
+    - { log: RobotHardware0_servoState, column: [0-11] }
 
 comp:
   func: plot_comp
   data:
-    -  { log: st_allEEComp, column: [0, 1, 2, 3, 4, 5] }
+    -  { log: st_allEEComp, column: [0-11] }
 
 watt:
   func: plot_watt
   data:
-    - { log: RobotHardware0_dq, column: [0,1,2,3,4,5]  }
-    - { log: RobotHardware0_tau, column: [0,1,2,3,4,5] }
+    - { log: RobotHardware0_dq, column: [0-11]  }
+    - { log: RobotHardware0_tau, column: [0-11] }
 ServoState:
   func: plot_servostate
   data:
-    - { log: RobotHardware0_servoState, column: [0,1,2,3,4,5] }
+    - { log: RobotHardware0_servoState, column: [0-11] }
 
 12V:
   func: plot_12V
   data:
-    - { log: RobotHardware0_servoState, column: [0,1,2,3,4,5] }
+    - { log: RobotHardware0_servoState, column: [0-11] }
 
 80V:
   func: plot_80V
   data:
-    - { log: RobotHardware0_servoState, column: [0,1,2,3,4,5] }
+    - { log: RobotHardware0_servoState, column: [0-11] }
 
 pgain:
   func: plot_pgain

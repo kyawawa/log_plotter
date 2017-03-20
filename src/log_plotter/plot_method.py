@@ -50,6 +50,7 @@ class PlotMethod(object):
     def __plot_urata_servo(plot_item, times, data_dict, logs, log_cols, cur_col, key, i, offset1, offset2=1):
         plot_item.plot(times, data_dict[logs[0]][:, (PlotMethod.urata_len+1) * log_cols[0] + (offset1+offset2)],
                        pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+                       # pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=2.0, name=key)
 
     @staticmethod
     def plot_servostate(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
@@ -111,7 +112,7 @@ class PlotMethod(object):
     def plot_rad2deg(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
         data_rad=data_dict[logs[0]][:, log_cols[0]]
         data_deg=[math.degrees(x) for x in data_rad]
-        plot_item.plot(times, data_deg,pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=(len(logs)-i+3), style=PlotMethod.linetypes["style"][i]), name=key)
+        plot_item.plot(times, data_deg,pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
 
     @staticmethod
     def plot_watt(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
@@ -135,7 +136,15 @@ class PlotMethod(object):
     @staticmethod
     def plot_rad2deg_diff(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
         plot_item.plot(times, [math.degrees(x) for x in (data_dict[logs[1]][:, log_cols[1]] - data_dict[logs[0]][:, log_cols[0]])],
-                       pen=pyqtgraph.mkPen('r', width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+                       pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_rad2deg_vel(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        data = numpy.degrees(data_dict[logs[0]][:, log_cols[0]])
+        dt = times[1] - times[0]
+        vel = numpy.diff(data) / dt
+        vel = numpy.append([0.0], vel)
+        plot_item.plot(times, vel, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
 
     @staticmethod
     def plot_comp(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
@@ -161,6 +170,32 @@ class PlotMethod(object):
         plot_item.plot(times, -data_dict[logs[0]][:, log_cols[0]], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
 
     @staticmethod
+    def plot_ankle_stability(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        sigma_x = [-0.1, 0.13]
+        sigma_y = [-0.060, 0.082] # left leg
+        cogx = data_dict[logs[0]][:, log_cols[0]] # cog x
+        height = data_dict[logs[1]][:, log_cols[1]] # cog height
+        vel = data_dict[logs[2]][:, log_cols[2]]    # cog velocity
+        g = 9.807
+        omega = numpy.sqrt(g / height)
+        data = vel / omega + cogx
+        plot_item.plot(times, data, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_estimated_wall_angle(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        force_x = data_dict[logs[0]][:, log_cols[0]]
+        force_y = data_dict[logs[1]][:, log_cols[1]]
+        contact_states = data_dict[logs[2]][:, log_cols[2]]
+        force = numpy.array([force_x, force_y])
+        force = numpy.concatenate((numpy.array([[0], [0]]), numpy.diff(force)), axis=1)
+        force = force / numpy.sum(force**2, axis=0)**(1.0/2.0) # normalize
+        direction = numpy.array([1, 0]) # direction of movement
+        data = numpy.arccos(numpy.dot(direction, force))
+        cross = -math.pi * (numpy.cross(direction, force, axis=0) < 0)
+        data = numpy.degrees(data + cross)
+        plot_item.plot(times, data * (1 - contact_states), pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
     def plot_swing_wrench(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
         wrench = data_dict[logs[0]][:, log_cols[0]]
         contact_states = data_dict[logs[1]][:, log_cols[1]]
@@ -173,7 +208,7 @@ class PlotMethod(object):
         wrench -= wrench[0]
         contact_states = data_dict[logs[1]][:, log_cols[1]]
         # plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
-        plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=3.0, name=key)
+        plot_item.plot(times, [x * (1 - y) for x, y in zip(wrench, contact_states)], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=2.0, name=key)
 
     @staticmethod
     def plot_swing_wrench_compensation(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
@@ -243,11 +278,14 @@ class PlotMethod(object):
 
     @staticmethod
     def plot_relation_swing(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        data0 = data_dict[logs[0]][:, log_cols[0]] - numpy.amin(data_dict[logs[0]][:, log_cols[0]])
+        data1 = data_dict[logs[1]][:, log_cols[1]] - numpy.amin(data_dict[logs[1]][:, log_cols[1]])
         contact_states = data_dict[logs[2]][:, log_cols[2]]
         # plot_item.plot([x * (1 - y) for x, y in zip(data_dict[logs[0]][:, log_cols[0]], contact_states)], [x * (1 - y) for x, y in zip(data_dict[logs[1]][:, log_cols[1]], contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
-        plot_item.plot([x * (1 - y) for x, y in zip(data_dict[logs[0]][:, log_cols[0]], contact_states)], [x * (1 - y) for x, y in zip(data_dict[logs[1]][:, log_cols[1]], contact_states)], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=4.0, name=key)
+        plot_item.plot([x * (1 - y) for x, y in zip(data0, contact_states)], [x * (1 - y) for x, y in zip(data1, contact_states)], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
+        # plot_item.plot([x * (1 - y) for x, y in zip(data_dict[logs[0]][:, log_cols[0]], contact_states)], [x * (1 - y) for x, y in zip(data_dict[logs[1]][:, log_cols[1]], contact_states)], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=2.0, name=key)
 
     @staticmethod
     def normal(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
         plot_item.plot(times, data_dict[logs[0]][:, log_cols[0]], pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
-        # plot_item.plot(times, data_dict[logs[0]][:, log_cols[0]], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=4.0, name=key)
+        # plot_item.plot(times, data_dict[logs[0]][:, log_cols[0]], pen=None, symbol='o', symbolPen=PlotMethod.color_list[i] ,symbolBrush=PlotMethod.color_list[i], symbolSize=2.0, name=key)

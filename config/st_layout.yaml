@@ -23,6 +23,7 @@ main:
       - { key: rmfo_off_lfsensor, id: [0-2] }
       - { key: st_ref_rfsensor, id: [0-2] }
       - { key: st_ref_lfsensor, id: [0-2] }
+      - { key: st_abs_lfsensor, id: [0-2] }
 
   act/ref moment:
     legends:
@@ -30,6 +31,14 @@ main:
       - { key: rmfo_off_lfsensor, id: [3-5] }
       - { key: st_ref_rfsensor, id: [3-5] }
       - { key: st_ref_lfsensor, id: [3-5] }
+
+  kf_rpy:
+    legends:
+      - { key: kf_rpy, id: [0-2] }
+
+  st_actBaseRpy:
+    legends:
+      - { key: st_actBaseRpy, id: [0-2] }
 
   # optional_data:
   #   legends:

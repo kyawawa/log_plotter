@@ -26,6 +26,18 @@ rmfo_off_lfsensor_swing_abc:
     - { log: rmfo_off_lfsensor, column: [0-5] }
     - { log: abc_contactStates, column: [1,1,1,1,1,1] }
 
+rmfo_off_rfsensor_swing_abc:
+  func: plot_swing_wrench
+  data:
+    - { log: rmfo_off_rfsensor, column: [0-5] }
+    - { log: abc_contactStates, column: [0,0,0,0,0,0] }
+
+rmfo_off_lfsensor_swing_abc:
+  func: plot_swing_wrench
+  data:
+    - { log: rmfo_off_lfsensor, column: [0-5] }
+    - { log: abc_contactStates, column: [1,1,1,1,1,1] }
+
 rmfo_off_rfsensor_swing_compensation:
   func: plot_swing_wrench_compensation
   data:
@@ -110,11 +122,37 @@ st_prev_act_force_lfsensor_swing:
     - { log: st_prevActForcelfsensor, column: [0-2] }
     - { log: st_actContactStates, column: [1,1,1] }
 
+st_prev_act_force_rfsensor_swing_abc:
+  func: plot_swing_wrench
+  data:
+    - { log: st_prevActForcerfsensor, column: [0-2] }
+    - { log: abc_contactStates, column: [0,0,0] }
+
+st_prev_act_force_lfsensor_swing_abc:
+  func: plot_swing_wrench
+  data:
+    - { log: st_prevActForcelfsensor, column: [0-2] }
+    - { log: abc_contactStates, column: [1,1,1] }
+
 st_prev_act_force_sum:
   func: plot_sum
   data:
     - { log: st_prevActForcelfsensor, column: [0-2] }
     - { log: st_prevActForcerfsensor, column: [0-2] }
+
+estimated_wall_angle_r:
+  func: plot_estimated_wall_angle
+  data:
+    - { log: st_prevActForcerfsensor, column: [0] }
+    - { log: st_prevActForcerfsensor, column: [1] }
+    - { log: abc_contactStates, column: [0] }
+
+estimated_wall_angle_l:
+  func: plot_estimated_wall_angle
+  data:
+    - { log: st_prevActForcelfsensor, column: [0] }
+    - { log: st_prevActForcelfsensor, column: [1] }
+    - { log: abc_contactStates, column: [1] }
 
 # st_abs_rfsensor_swing_compensation_filter:
 #   func: plot_swing_wrench_compensation_filter
@@ -143,3 +181,13 @@ st_prev_act_force_sum:
 #     - { log: st_abslfsensor, column: [0-2] }
 #     - { log: st_actContactStates, column: [1,1,1] }
 #     - { log: st_absActEEPos, column: [3-5] }
+
+st_prevActForceZ:
+  data:
+    - { log: st_prevActForceZ, column: [0-1] }
+
+st_prevActForceZ_sum:
+  func: plot_sum
+  data:
+    - { log: st_prevActForceZ, column: [0] }
+    - { log: st_prevActForceZ, column: [1] }
