@@ -23,10 +23,10 @@ class LogParser(object):
             self.plot_dict = plot_conf
             self.layout_dict = layout_conf
         # expand [0-33] => [0,1,2,...,33]
-        for leg_info in self.plot_dict.values():
-            for log_info in leg_info['data']:
-                if type(log_info['column'][0]) == str:
-                    log_info['column'] = expand_str_to_list(log_info['column'][0])
+        # for leg_info in self.plot_dict.values():
+        #     for log_info in leg_info['data']:
+        #         if type(log_info['column'][0]) == str:
+        #             log_info['column'] = expand_str_to_list(log_info['column'][0])
         for dict_title in self.layout_dict:
             for leg in self.layout_dict[dict_title]['legends']:
                 if type(leg['id'][0]) == str:

@@ -23,6 +23,7 @@ class GraphLegendInfo(object):
         my_key = self.group_info['legends'][k]['key']
         my_info.update(plot_yaml[my_key])
         my_info.update(self.group_info['legends'][k])
+        # {'key': 'sh_qOut', 'data': [OrderedDict([('log', 'sh_qOut'), ('column', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])])], 'id': [0, 1, 2, 3, 4, 5], 'func': 'plot_rad2deg'}
         # colect info from layout.yaml
         my_info.setdefault('func', 'normal')
         my_info.setdefault('label', my_key)
@@ -31,7 +32,8 @@ class GraphLegendInfo(object):
         my_info['id'] = my_info['id'][j]
         my_info['data'] = [d.copy() for d in my_info['data']]
         for d in my_info['data']:
-            d['column'] = d['column'][my_info['id']]
+            d['column'] = my_info['id']
+        # {'key': 'sh_qOut', 'data': [OrderedDict([('log', 'sh_qOut'), ('column', 0)])], 'id': 0, 'func': 'plot_rad2deg', 'label': 'sh_qOut'}
 
         # check contents
         for info_name in ['key', 'data', 'id', 'func', 'label']:
@@ -52,10 +54,10 @@ if __name__=='__main__':
         layout_list = yaml.load(layout_conf)
 
     # expand [0-33] => [0,1,2,...,33]
-    for leg_info in plot_dict.values():
-        for log_info in leg_info['data']:
-            if type(log_info['column'][0]) == str:
-                log_info['column'] = expand_str_to_list(log_info['column'][0])
+    # for leg_info in plot_dict.values():
+    #     for log_info in leg_info['data']:
+    #         if type(log_info['column'][0]) == str:
+    #             log_info['column'] = expand_str_to_list(log_info['column'][0])
     for group in layout_list:
         for leg in group['legends']:
             if type(leg['id'][0]) == str:
@@ -67,4 +69,3 @@ if __name__=='__main__':
                 # print 'title= {}, column= {}, legend= {}'.format(group['title'], j, legend['key'])
                 legend_info = GraphLegendInfo(layout_list, plot_dict, i, j, k)
                 print legend_info.info
-
