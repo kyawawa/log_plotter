@@ -103,6 +103,28 @@ class PlotMethod(object):
         plot_item.plot(times, data, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=2, style=PlotMethod.linetypes["style"][i]), name=key)
 
     @staticmethod
+    def plot_differential(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        data = numpy.degrees(data_dict[logs[0]][:, log_cols[0]])
+        data_diff = numpy.diff(data)
+        times_diff = numpy.diff(times)
+        data_diff /= times_diff # vel
+        data_diff = numpy.append([0], data_diff)
+        times_diff = numpy.append([0], times_diff)
+        plot_item.plot(times, data_diff, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=len(logs)-i, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
+    def plot_second_differential(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
+        data = numpy.degrees(data_dict[logs[0]][:, log_cols[0]])
+        data_diff = numpy.diff(data)
+        times_diff = numpy.diff(times)
+        data_diff /= times_diff # vel
+        data_diff = numpy.diff(data_diff)
+        data_diff = numpy.append([0], data_diff)
+        data_diff /= times_diff # acc
+        data_diff = numpy.append([0], data_diff)
+        plot_item.plot(times, data_diff, pen=pyqtgraph.mkPen(PlotMethod.linetypes["color"][i], width=len(logs)-i, style=PlotMethod.linetypes["style"][i]), name=key)
+
+    @staticmethod
     def plot_rad2deg_diff(plot_item, times, data_dict, logs, log_cols, cur_col, key, i):
         plot_item.plot(times, [math.degrees(x) for x in (data_dict[logs[1]][:, log_cols[1]] - data_dict[logs[0]][:, log_cols[0]])],
                        pen=pyqtgraph.mkPen('r', width=2, style=PlotMethod.linetypes["style"][i]), name=key)
