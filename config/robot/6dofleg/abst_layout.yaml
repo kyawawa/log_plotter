@@ -1,0 +1,67 @@
+main:
+  rleg_joint_angle:
+    legends:
+      - { key: sh_qOut, id: [0-5] }
+      - { key: abst_q, id: [0-5] }
+      - { key: RobotHardware0_q, id: [0-5] }
+
+  lleg_joint_angle:
+    legends:
+      - { key: sh_qOut, id: [6-11] }
+      - { key: abst_q, id: [6-11] }
+      - { key: RobotHardware0_q, id: [6-11] }
+
+  ref_zmp:
+    legends:
+      - { key: abst_refZmpOut, id: [0-2] }
+    newline: false
+
+  base_zmp:
+    legends:
+      - { key: abst_baseOriginRefZmp, id: [0-2] }
+
+  world_ref_cog:
+    legends:
+      - { key: abst_refCogOut, id: [0-2] }
+    newline: false
+
+  abst_basePos:
+    legends:
+      - { key: abst_basePos, id: [0-2] }
+
+  abst_legtraj:
+    legends:
+      - { key: abst_legtraj, id: [0], label: "right x" }
+      - { key: abst_legtraj, id: [2], label: "right z" }
+      - { key: abst_legtraj, id: [3], label: "left x" }
+      - { key: abst_legtraj, id: [5], label: "left z" }
+    newline: false
+
+  abst_refContactStates:
+    legends:
+      - { key: abst_refContactStates, id: [0], lebel: "rleg" }
+      - { key: abst_refContactStates, id: [1], lebel: "lleg" }
+
+  # foot_origin_cog:
+  #   legends:
+  #     - { key: abs_foot_origin_ref_cog, id: [0-2] }
+  #     - { key: abs_foot_origin_act_cog, id: [0-2] }
+
+  # right_foot_force:
+  #   legends:
+  #     - { key: sh_rfsensorOut, id: [0-5] }
+  #     - { key: RobotHardware0_rfsensor, id: [0-5] }
+  #     - { key: rmfo_off_rfsensor, id: [0-5] }
+
+  # imu_gsensor:
+  #   legends:
+  #     - { key: imu_gsensor, id: [0], label: x }
+  #     - { key: imu_gsensor, id: [1], label: y }
+  #     - { key: imu_gsensor, id: [2], label: z }
+  #   newline: False
+
+  # imu_gyrometer:
+  #   legends:
+  #     - { key: imu_gyrometer, id: [0], label: x }
+  #     - { key: imu_gyrometer, id: [1], label: y }
+  #     - { key: imu_gyrometer, id: [2], label: z }

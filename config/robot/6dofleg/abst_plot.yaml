@@ -1,0 +1,43 @@
+extend:
+  - 6dofleg_plot.yaml
+
+abs_new_ref_zmp:
+  data:
+    - { log: abc_originNewRefZmp, column: [0-2] }
+
+abs_foot_origin_ref_cog:
+  data:
+    - { log: abc_footOriginRefCog, column: [0-2] }
+
+abs_foot_origin_act_cog:
+  data:
+    - { log: abc_footOriginActCog, column: [0-2] }
+
+abst_q:
+  func: plot_rad2deg
+  data:
+    - { log: abst_q, column: [0-11] }
+
+abst_refCogOut:
+  data:
+    - { log: abst_refCogOut, column: [0-2] }
+
+abst_refZmpOut:
+  data:
+    - { log: abst_refZmpOut, column: [0-2] }
+
+abst_baseOriginRefZmp:
+  data:
+    - { log: abst_baseOriginRefZmp, column: [0-2] }
+
+abst_basePos:
+  data:
+    - { log: abst_baseTformOut, column: [0-2] }
+
+abst_refContactStates:
+  data:
+    - { log: abst_refContactStates, column: [0-10] }
+
+abst_legtraj:
+  data:
+    - { log: abst_controlSwingSupportTime, column: [0-5] }
