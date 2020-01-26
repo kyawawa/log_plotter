@@ -1,39 +1,60 @@
 main:
-  rleg_joint_angle:
-    legends:
-      - { key: sh_qOut, id: [0-5] }
-      - { key: abst_q, id: [0-5] }
-      - { key: RobotHardware0_q, id: [0-5] }
+  # rleg_joint_angle:
+  #   legends:
+  #     - { key: sh_qOut, id: [0-5] }
+  #     - { key: abst_q, id: [0-5] }
+  #     - { key: RobotHardware0_q, id: [0-5] }
 
-  lleg_joint_angle:
-    legends:
-      - { key: sh_qOut, id: [6-11] }
-      - { key: abst_q, id: [6-11] }
-      - { key: RobotHardware0_q, id: [6-11] }
+  # lleg_joint_angle:
+  #   legends:
+  #     - { key: sh_qOut, id: [6-11] }
+  #     - { key: abst_q, id: [6-11] }
+  #     - { key: RobotHardware0_q, id: [6-11] }
+
+  # ref_zmp_xy:
+  #   legends:
+  #     - { key: abst_refZmpXY, id: [0] }
+  #   bottom_label: 'Y [m]'
+  #   left_label: 'X [m]'
+  #   xRange: { min: -0.2, max: 0.2 }
 
   ref_zmp:
     legends:
       - { key: abst_refZmpOut, id: [0-2] }
-    newline: false
+      # - { key: abst_refContactStates, id: [0,0,0], lebel: "rleg" }
+      # - { key: abst_refContactStates, id: [1,1,1], lebel: "lleg" }
+    # newline: false
 
-  base_zmp:
+  abst_refCapturePoint:
     legends:
-      - { key: abst_baseOriginRefZmp, id: [0-2] }
+      - { key: abst_refCapturePoint, id: [0-2] }
+
+  # base_zmp:
+  #   legends:
+  #     - { key: abst_baseOriginRefZmp, id: [0-2] }
 
   world_ref_cog:
     legends:
       - { key: abst_refCogOut, id: [0-2] }
-    newline: false
+  #   newline: false
 
   abst_basePos:
     legends:
       - { key: abst_basePos, id: [0-2] }
 
-  abst_legtraj:
+  abst_legtraj_xz:
     legends:
       - { key: abst_legtraj, id: [0], label: "right x" }
       - { key: abst_legtraj, id: [2], label: "right z" }
       - { key: abst_legtraj, id: [3], label: "left x" }
+      - { key: abst_legtraj, id: [5], label: "left z" }
+    newline: false
+
+  abst_legtraj_yz:
+    legends:
+      - { key: abst_legtraj, id: [1], label: "right y" }
+      - { key: abst_legtraj, id: [2], label: "right z" }
+      - { key: abst_legtraj, id: [4], label: "left y" }
       - { key: abst_legtraj, id: [5], label: "left z" }
     newline: false
 
