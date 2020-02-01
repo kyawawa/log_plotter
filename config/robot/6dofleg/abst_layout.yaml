@@ -36,6 +36,14 @@ main:
   world_ref_cog:
     legends:
       - { key: abst_refCogOut, id: [0-2] }
+
+  world_ref_cog_vel:
+    legends:
+      - { key: abst_refCogVelOut, id: [0-2] }
+
+  world_ref_cog_acc:
+    legends:
+      - { key: abst_refCogAccOut, id: [0-2] }
   #   newline: false
 
   abst_basePos:

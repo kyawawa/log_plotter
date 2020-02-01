@@ -22,6 +22,14 @@ abst_refCogOut:
   data:
     - { log: abst_refCogOut, column: [0-2] }
 
+abst_refCogVelOut:
+  data:
+    - { log: abst_refCogVelOut, column: [0-2] }
+
+abst_refCogAccOut:
+  data:
+    - { log: abst_refCogAccOut, column: [0-2] }
+
 abst_refZmpOut:
   data:
     - { log: abst_refZmpOut, column: [0-2] }
