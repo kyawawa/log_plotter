@@ -50,6 +50,10 @@ main:
     legends:
       - { key: abst_basePos, id: [0-2] }
 
+  abst_refAngularMomentumRPY:
+    legends:
+      - { key: abst_refAngularMomentumRPY, id: [0-2] }
+
   abst_legtraj_xz:
     legends:
       - { key: abst_legtraj, id: [0], label: "right x" }

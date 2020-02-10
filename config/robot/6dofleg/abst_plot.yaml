@@ -42,6 +42,10 @@ abst_basePos:
   data:
     - { log: abst_baseTformOut, column: [0-2] }
 
+abst_refAngularMomentumRPY:
+  data:
+    - { log: abst_refAngularMomentumRPY, column: [0-2] }
+
 abst_refContactStates:
   data:
     - { log: abst_refContactStates, column: [0-10] }
