@@ -21,6 +21,7 @@ main:
   ref_zmp:
     legends:
       - { key: abst_refZmpOut, id: [0-2] }
+      - { key: abst_new_ref_zmp, id: [0-2] }
       # - { key: abst_refContactStates, id: [0,0,0], lebel: "rleg" }
       # - { key: abst_refContactStates, id: [1,1,1], lebel: "lleg" }
     # newline: false
@@ -46,45 +47,51 @@ main:
       - { key: abst_refCogAccOut, id: [0-2] }
   #   newline: false
 
-  abst_basePos:
-    legends:
-      - { key: abst_basePos, id: [0-2] }
+  # abst_basePos:
+  #   legends:
+  #     - { key: abst_basePos, id: [0-2] }
 
-  abst_refAngularMomentumRPY:
-    legends:
-      - { key: abst_refAngularMomentumRPY, id: [0-2] }
+  # abst_refAngularMomentumRPY:
+  #   legends:
+  #     - { key: abst_refAngularMomentumRPY, id: [0-2] }
 
-  abst_legtraj_xz:
-    legends:
-      - { key: abst_legtraj, id: [0], label: "right x" }
-      - { key: abst_legtraj, id: [2], label: "right z" }
-      - { key: abst_legtraj, id: [3], label: "left x" }
-      - { key: abst_legtraj, id: [5], label: "left z" }
-    newline: false
+  # abst_legtraj_xz:
+  #   legends:
+  #     - { key: abst_legtraj, id: [0], label: "right x" }
+  #     - { key: abst_legtraj, id: [2], label: "right z" }
+  #     - { key: abst_legtraj, id: [3], label: "left x" }
+  #     - { key: abst_legtraj, id: [5], label: "left z" }
+  #   newline: false
 
-  abst_legtraj_yz:
-    legends:
-      - { key: abst_legtraj, id: [1], label: "right y" }
-      - { key: abst_legtraj, id: [2], label: "right z" }
-      - { key: abst_legtraj, id: [4], label: "left y" }
-      - { key: abst_legtraj, id: [5], label: "left z" }
-    newline: false
+  # abst_legtraj_yz:
+  #   legends:
+  #     - { key: abst_legtraj, id: [1], label: "right y" }
+  #     - { key: abst_legtraj, id: [2], label: "right z" }
+  #     - { key: abst_legtraj, id: [4], label: "left y" }
+  #     - { key: abst_legtraj, id: [5], label: "left z" }
+  #   newline: false
 
-  abst_refContactStates:
-    legends:
-      - { key: abst_refContactStates, id: [0], lebel: "rleg" }
-      - { key: abst_refContactStates, id: [1], lebel: "lleg" }
+  # abst_refContactStates:
+  #   legends:
+  #     - { key: abst_refContactStates, id: [0], lebel: "rleg" }
+  #     - { key: abst_refContactStates, id: [1], lebel: "lleg" }
 
   # foot_origin_cog:
   #   legends:
-  #     - { key: abs_foot_origin_ref_cog, id: [0-2] }
-  #     - { key: abs_foot_origin_act_cog, id: [0-2] }
+  #     - { key: abst_foot_origin_ref_cog, id: [0-2] }
+  #     - { key: abst_foot_origin_act_cog, id: [0-2] }
 
-  # right_foot_force:
-  #   legends:
-  #     - { key: sh_rfsensorOut, id: [0-5] }
-  #     - { key: RobotHardware0_rfsensor, id: [0-5] }
-  #     - { key: rmfo_off_rfsensor, id: [0-5] }
+  right_foot_force:
+    legends:
+      # - { key: sh_rfsensorOut, id: [0-5] }
+      - { key: RobotHardware0_rfsensor, id: [0-5] }
+      - { key: rmfo_off_rfsensor, id: [0-5] }
+
+  left_foot_force:
+    legends:
+      # - { key: sh_rfsensorOut, id: [0-5] }
+      - { key: RobotHardware0_rfsensor, id: [0-5] }
+      - { key: rmfo_off_rfsensor, id: [0-5] }
 
   # imu_gsensor:
   #   legends:

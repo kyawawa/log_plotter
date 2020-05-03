@@ -1,17 +1,30 @@
 extend:
-  - 6dofleg_plot.yaml
+  - ../common_plot.yaml
 
-abs_new_ref_zmp:
+RobotHardware0_q:
+  func: plot_rad2deg
   data:
-    - { log: abc_originNewRefZmp, column: [0-2] }
+    - { log: RobotHardware0_q, column: [0-50] }
 
-abs_foot_origin_ref_cog:
+servo_pgain:
   data:
-    - { log: abc_footOriginRefCog, column: [0-2] }
+    - { log: RobotHardware0_pgainOut, column: [0-50] }
 
-abs_foot_origin_act_cog:
+servo_dgain:
   data:
-    - { log: abc_footOriginActCog, column: [0-2] }
+    - { log: RobotHardware0_dgainOut, column: [0-50] }
+
+abst_new_ref_zmp:
+  data:
+    - { log: abst_originNewRefZmp, column: [0-2] }
+
+abst_foot_origin_ref_cog:
+  data:
+    - { log: abst_footOriginRefCog, column: [0-2] }
+
+abst_foot_origin_act_cog:
+  data:
+    - { log: abst_footOriginActCog, column: [0-2] }
 
 abst_q:
   func: plot_rad2deg
